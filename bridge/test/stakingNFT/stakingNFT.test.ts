@@ -3514,20 +3514,19 @@ contract("StakingNFT", async () => {
   describe("tokenURI", async () => {
     // TODO: fix test
     // Something is wrong with this test
-    /*
-    it("tokenURI Test 1", async () => {
+    //it("tokenURI Test 1", async () => {
       // Stake position
-      const signers = await ethers.getSigners();
-      let to = signers[0].address;
-      const amount = BigNumber.from("1000000000000000000");
-      let txResponse = await fixture.aToken.approve(stakingNFT.address, amount);
+      //const signers = await ethers.getSigners();
+      //let to = signers[0].address;
+      //const amount = BigNumber.from("1000000000000000000");
+      //let txResponse = await fixture.aToken.approve(stakingNFT.address, amount);
       // We use receipt:any *only* because of events which may not be present
-      let receipt: any = await txResponse.wait();
-      txResponse = await stakingNFT.mintNFTMock(to, amount);
-      receipt = await txResponse.wait();
-      const expTokenID = BigNumber.from("1");
-      const tokenID = BigNumber.from(receipt.events[2].args.tokenId);
-      expect(tokenID).to.eq(expTokenID);
+      //let receipt: any = await txResponse.wait();
+      //txResponse = await stakingNFT.mintNFTMock(to, amount);
+      //receipt = await txResponse.wait();
+      //const expTokenID = BigNumber.from("1");
+      //const tokenID = BigNumber.from(receipt.events[2].args.tokenId);
+      //expect(tokenID).to.eq(expTokenID);
 
       // Get block number
       //const blockNumber = await ethers.provider.getBlockNumber();
@@ -3537,9 +3536,8 @@ contract("StakingNFT", async () => {
       //const expAccumulatorToken = BigNumber.from(0);
 
       // get position info
-      const retValue = await stakingNFT.tokenURIMock(tokenID);
-    });
-    */
+      //const retValue = await stakingNFT.tokenURIMock(tokenID);
+    //});
 
     it("tokenURI Test 2: Fail", async () => {
       const tokenID = BigNumber.from("0");
