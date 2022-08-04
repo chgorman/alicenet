@@ -142,8 +142,12 @@ contract MockStakingNFT is StakingNFT {
         return StakingNFT._slushSkim(shares_, accumulator_, slush_);
     }
 
-    function getTotalSharesMock() public view returns (uint256) {
-        return StakingNFT.getTotalShares();
+    function getTotalSharesEthMock() public view returns (uint256) {
+        return StakingNFT.getTotalSharesEth();
+    }
+
+    function getTotalSharesTokenMock() public view returns (uint256) {
+        return StakingNFT.getTotalSharesToken();
     }
 
     function getTotalReserveEthMock() public view returns (uint256) {
@@ -174,6 +178,8 @@ contract MockStakingNFT is StakingNFT {
         public
         view
         returns (
+            uint256,
+            bool,
             uint256,
             uint256,
             uint256,

@@ -46,6 +46,8 @@ interface IStakingNFT {
         external
         view
         returns (
+            uint256 weightedShares,
+            bool lockedStakingPosition,
             uint256 shares,
             uint256 freeAfter,
             uint256 withdrawFreeAfter,
@@ -55,7 +57,9 @@ interface IStakingNFT {
 
     function getAccumulatorScaleFactor() external view returns (uint256);
 
-    function getTotalShares() external view returns (uint256);
+    function getTotalSharesEth() external view returns (uint256);
+
+    function getTotalSharesToken() external view returns (uint256);
 
     function getTotalReserveEth() external view returns (uint256);
 

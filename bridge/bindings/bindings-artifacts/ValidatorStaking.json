@@ -428,6 +428,19 @@
   },
   {
     "inputs": [],
+    "name": "getMaxGovernanceLock",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "getMaxMintLock",
     "outputs": [
       {
@@ -473,6 +486,16 @@
     ],
     "name": "getPosition",
     "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "weightedShares",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "lockedStakingPosition",
+        "type": "bool"
+      },
       {
         "internalType": "uint256",
         "name": "shares",
@@ -548,7 +571,20 @@
   },
   {
     "inputs": [],
-    "name": "getTotalShares",
+    "name": "getTotalSharesEth",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getTotalSharesToken",
     "outputs": [
       {
         "internalType": "uint256",
@@ -651,6 +687,30 @@
         "type": "uint256"
       },
       {
+        "internalType": "uint32",
+        "name": "lockDuration_",
+        "type": "uint32"
+      }
+    ],
+    "name": "lockStakingPosition",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenID_",
+        "type": "uint256"
+      },
+      {
         "internalType": "uint256",
         "name": "lockDuration_",
         "type": "uint256"
@@ -712,6 +772,19 @@
         "type": "uint256"
       }
     ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint32",
+        "name": "epoch_",
+        "type": "uint32"
+      }
+    ],
+    "name": "mintTokensForEpoch",
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -931,6 +1004,19 @@
   {
     "inputs": [],
     "name": "tripCB",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenID_",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateStakingPosition",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

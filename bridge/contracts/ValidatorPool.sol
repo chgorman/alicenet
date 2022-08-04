@@ -542,7 +542,7 @@ contract ValidatorPool is
             uint256 payoutToken
         )
     {
-        (uint256 stakeShares, , , , ) = IStakingNFT(_publicStakingAddress()).getPosition(
+        (, , uint256 stakeShares, , , , ) = IStakingNFT(_publicStakingAddress()).getPosition(
             stakerTokenID_
         );
         uint256 stakeAmount = _stakeAmount;
@@ -657,7 +657,7 @@ contract ValidatorPool is
         )
     {
         IStakingNFT stakeContract = IStakingNFT(stakeContractAddress_);
-        (minerShares, , , , ) = stakeContract.getPosition(tokenID_);
+        (, , minerShares, , , , ) = stakeContract.getPosition(tokenID_);
         (payoutEth, payoutToken) = stakeContract.burn(tokenID_);
     }
 

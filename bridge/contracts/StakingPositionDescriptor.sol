@@ -14,6 +14,8 @@ contract StakingPositionDescriptor is IStakingNFTDescriptor {
         returns (string memory)
     {
         (
+            uint256 weightedShares,
+            bool lockedStakingPosition,
             uint256 shares,
             uint256 freeAfter,
             uint256 withdrawFreeAfter,
