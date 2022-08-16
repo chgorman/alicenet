@@ -4,6 +4,11 @@ pragma solidity ^0.8.11;
 abstract contract StakingNFTStorage {
     // Position describes a staked position
     struct Position {
+        // number of aTokens when including weight
+        uint224 weightedShares;
+        // lockedStakingPosition specifies if the staked position is locked;
+        // this is only used for locked staking positions.
+        bool lockedStakingPosition;
         // number of aToken
         uint224 shares;
         // block number after which the position may be burned.
@@ -44,8 +49,13 @@ abstract contract StakingNFTStorage {
     // cb is a set only object
     bool internal _circuitBreaker;
 
-    // _shares stores total amount of AToken staked in contract
-    uint256 internal _shares;
+    // _sharesEth stores total amount of AToken staked in contract
+    // for Eth distribution
+    uint256 internal _sharesEth;
+
+    // _sharesToken stores total amount of AToken staked in contract
+    // for AToken distribution
+    uint256 internal _sharesToken;
 
     // _tokenState tracks distribution of AToken that originate from slashing
     // events
@@ -65,4 +75,15 @@ abstract contract StakingNFTStorage {
     // state to keep track of the amount of ATokens deposited and collected
     // from the contract
     uint256 internal _reserveToken;
+
+    // _REWARD_ERA specifies the number of epochs per reward era,
+    // which determines the specific decay rate of additional ATokens which
+    // are minted each snapshot (epoch).
+    uint256 internal constant _REWARD_ERA = 2200;
+
+    // _ADDITIONAL_ATOKENS specifies the total number of additional ATokens
+    // which will be minted.
+    //
+    // TODO: this value must be determined
+    uint256 internal constant _ADDITIONAL_ATOKENS = 220000000000000000000000000;
 }

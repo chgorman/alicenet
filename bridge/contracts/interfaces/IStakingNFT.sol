@@ -55,7 +55,9 @@ interface IStakingNFT {
 
     function getAccumulatorScaleFactor() external view returns (uint256);
 
-    function getTotalShares() external view returns (uint256);
+    function getTotalSharesEth() external view returns (uint256);
+
+    function getTotalSharesToken() external view returns (uint256);
 
     function getTotalReserveEth() external view returns (uint256);
 
