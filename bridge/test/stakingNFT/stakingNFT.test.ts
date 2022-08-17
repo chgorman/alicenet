@@ -109,9 +109,12 @@ contract("StakingNFT", async () => {
       let retReserveToken = await stakingNFT.getTotalReserveATokenMock();
       expect(retReserveToken).to.eq(expReserveToken);
       // Total shares (staked Tokens)
-      let expShares = BigNumber.from(0);
-      let retShares = await stakingNFT.getTotalSharesMock();
-      expect(retShares).to.eq(expShares);
+      let expSharesEth = BigNumber.from(0);
+      let retSharesEth = await stakingNFT.getTotalSharesEthMock();
+      expect(retSharesEth).to.eq(expSharesEth);
+      let expSharesToken = BigNumber.from(0);
+      let retSharesToken = await stakingNFT.getTotalSharesTokenMock();
+      expect(retSharesToken).to.eq(expSharesToken);
 
       const signers = await ethers.getSigners();
       const to = signers[0].address;
@@ -153,9 +156,12 @@ contract("StakingNFT", async () => {
       retReserveToken = await stakingNFT.getTotalReserveATokenMock();
       expect(retReserveToken).to.eq(expReserveToken);
       // Total shares (staked Tokens)
-      expShares = amount;
-      retShares = await stakingNFT.getTotalSharesMock();
-      expect(retShares).to.eq(expShares);
+      expSharesEth = amount;
+      retSharesEth = await stakingNFT.getTotalSharesEthMock();
+      expect(retSharesEth).to.eq(expSharesEth);
+      expSharesToken = BigNumber.from(0);
+      retSharesToken = await stakingNFT.getTotalSharesTokenMock();
+      expect(retSharesToken).to.eq(expSharesToken);
 
       // deposit Eth to be distributed
       const magic = BigNumber.from("42");
@@ -202,9 +208,12 @@ contract("StakingNFT", async () => {
       retReserveToken = await stakingNFT.getTotalReserveATokenMock();
       expect(retReserveToken).to.eq(expReserveToken);
       // Total shares (staked Tokens)
-      expShares = amount;
-      retShares = await stakingNFT.getTotalSharesMock();
-      expect(retShares).to.eq(expShares);
+      expSharesEth = amount;
+      retSharesEth = await stakingNFT.getTotalSharesEthMock();
+      expect(retSharesEth).to.eq(expSharesEth);
+      expSharesToken = BigNumber.from(0);
+      retSharesToken = await stakingNFT.getTotalSharesTokenMock();
+      expect(retSharesToken).to.eq(expSharesToken);
 
       // Burn staking position (static call)
       const retValue4 = await stakingNFT.callStatic.burnMock(tokenID);
@@ -239,9 +248,12 @@ contract("StakingNFT", async () => {
       retReserveToken = await stakingNFT.getTotalReserveATokenMock();
       expect(retReserveToken).to.eq(expReserveToken);
       // Total shares (staked Tokens)
-      expShares = amount;
-      retShares = await stakingNFT.getTotalSharesMock();
-      expect(retShares).to.eq(expShares);
+      expSharesEth = amount;
+      retSharesEth = await stakingNFT.getTotalSharesEthMock();
+      expect(retSharesEth).to.eq(expSharesEth);
+      expSharesToken = BigNumber.from(0);
+      retSharesToken = await stakingNFT.getTotalSharesTokenMock();
+      expect(retSharesToken).to.eq(expSharesToken);
 
       // Burn staking position
       const tx4 = await stakingNFT.burnMock(tokenID);
@@ -258,9 +270,12 @@ contract("StakingNFT", async () => {
       retReserveToken = await stakingNFT.getTotalReserveATokenMock();
       expect(retReserveToken).to.eq(expReserveToken);
       // Total shares (staked Tokens)
-      expShares = BigNumber.from(0);
-      retShares = await stakingNFT.getTotalSharesMock();
-      expect(retShares).to.eq(expShares);
+      expSharesEth = BigNumber.from(0);
+      retSharesEth = await stakingNFT.getTotalSharesEthMock();
+      expect(retSharesEth).to.eq(expSharesEth);
+      expSharesToken = BigNumber.from(0);
+      retSharesToken = await stakingNFT.getTotalSharesTokenMock();
+      expect(retSharesToken).to.eq(expSharesToken);
       // Token accumulator
       expTokenAccumulator = BigNumber.from(0);
       expTokenSlush = BigNumber.from(0);
@@ -315,9 +330,12 @@ contract("StakingNFT", async () => {
       let retReserveToken = await stakingNFT.getTotalReserveATokenMock();
       expect(retReserveToken).to.eq(expReserveToken);
       // Total shares (staked Tokens)
-      let expShares = BigNumber.from(0);
-      let retShares = await stakingNFT.getTotalSharesMock();
-      expect(retShares).to.eq(expShares);
+      let expSharesEth = BigNumber.from(0);
+      let retSharesEth = await stakingNFT.getTotalSharesEthMock();
+      expect(retSharesEth).to.eq(expSharesEth);
+      let expSharesToken = BigNumber.from(0);
+      let retSharesToken = await stakingNFT.getTotalSharesTokenMock();
+      expect(retSharesToken).to.eq(expSharesToken);
 
       const signers = await ethers.getSigners();
       const to = signers[0].address;
@@ -359,9 +377,12 @@ contract("StakingNFT", async () => {
       retReserveToken = await stakingNFT.getTotalReserveATokenMock();
       expect(retReserveToken).to.eq(expReserveToken);
       // Total shares (staked Tokens)
-      expShares = amount;
-      retShares = await stakingNFT.getTotalSharesMock();
-      expect(retShares).to.eq(expShares);
+      expSharesEth = amount;
+      retSharesEth = await stakingNFT.getTotalSharesEthMock();
+      expect(retSharesEth).to.eq(expSharesEth);
+      expSharesToken = BigNumber.from(0);
+      retSharesToken = await stakingNFT.getTotalSharesTokenMock();
+      expect(retSharesToken).to.eq(expSharesToken);
 
       // deposit Eth to be distributed
       const magic = BigNumber.from("42");
@@ -408,9 +429,12 @@ contract("StakingNFT", async () => {
       retReserveToken = await stakingNFT.getTotalReserveATokenMock();
       expect(retReserveToken).to.eq(expReserveToken);
       // Total shares (staked Tokens)
-      expShares = amount;
-      retShares = await stakingNFT.getTotalSharesMock();
-      expect(retShares).to.eq(expShares);
+      expSharesEth = amount;
+      retSharesEth = await stakingNFT.getTotalSharesEthMock();
+      expect(retSharesEth).to.eq(expSharesEth);
+      expSharesToken = BigNumber.from(0);
+      retSharesToken = await stakingNFT.getTotalSharesTokenMock();
+      expect(retSharesToken).to.eq(expSharesToken);
 
       // Burn staking position (static call)
       const from = signers[0].address;
@@ -450,9 +474,12 @@ contract("StakingNFT", async () => {
       retReserveToken = await stakingNFT.getTotalReserveATokenMock();
       expect(retReserveToken).to.eq(expReserveToken);
       // Total shares (staked Tokens)
-      expShares = amount;
-      retShares = await stakingNFT.getTotalSharesMock();
-      expect(retShares).to.eq(expShares);
+      expSharesEth = amount;
+      retSharesEth = await stakingNFT.getTotalSharesEthMock();
+      expect(retSharesEth).to.eq(expSharesEth);
+      expSharesToken = BigNumber.from(0);
+      retSharesToken = await stakingNFT.getTotalSharesTokenMock();
+      expect(retSharesToken).to.eq(expSharesToken);
 
       // Burn staking position
       const tx4 = await stakingNFT.burnNFTMock(from, to, tokenID);
@@ -469,9 +496,12 @@ contract("StakingNFT", async () => {
       retReserveToken = await stakingNFT.getTotalReserveATokenMock();
       expect(retReserveToken).to.eq(expReserveToken);
       // Total shares (staked Tokens)
-      expShares = BigNumber.from(0);
-      retShares = await stakingNFT.getTotalSharesMock();
-      expect(retShares).to.eq(expShares);
+      expSharesEth = BigNumber.from(0);
+      retSharesEth = await stakingNFT.getTotalSharesEthMock();
+      expect(retSharesEth).to.eq(expSharesEth);
+      expSharesToken = BigNumber.from(0);
+      retSharesToken = await stakingNFT.getTotalSharesTokenMock();
+      expect(retSharesToken).to.eq(expSharesToken);
       // Token accumulator
       expTokenAccumulator = BigNumber.from(0);
       expTokenSlush = BigNumber.from(0);
@@ -528,9 +558,12 @@ contract("StakingNFT", async () => {
       let retReserveToken = await stakingNFT.getTotalReserveATokenMock();
       expect(retReserveToken).to.eq(expReserveToken);
       // Total shares (staked Tokens)
-      let expShares = BigNumber.from(0);
-      let retShares = await stakingNFT.getTotalSharesMock();
-      expect(retShares).to.eq(expShares);
+      let expSharesEth = BigNumber.from(0);
+      let retSharesEth = await stakingNFT.getTotalSharesEthMock();
+      expect(retSharesEth).to.eq(expSharesEth);
+      let expSharesToken = BigNumber.from(0);
+      let retSharesToken = await stakingNFT.getTotalSharesTokenMock();
+      expect(retSharesToken).to.eq(expSharesToken);
 
       const signers = await ethers.getSigners();
       const to = signers[0].address;
@@ -572,9 +605,12 @@ contract("StakingNFT", async () => {
       retReserveToken = await stakingNFT.getTotalReserveATokenMock();
       expect(retReserveToken).to.eq(expReserveToken);
       // Total shares (staked Tokens)
-      expShares = amount;
-      retShares = await stakingNFT.getTotalSharesMock();
-      expect(retShares).to.eq(expShares);
+      expSharesEth = amount;
+      retSharesEth = await stakingNFT.getTotalSharesEthMock();
+      expect(retSharesEth).to.eq(expSharesEth);
+      expSharesToken = BigNumber.from(0);
+      retSharesToken = await stakingNFT.getTotalSharesTokenMock();
+      expect(retSharesToken).to.eq(expSharesToken);
 
       // deposit Eth to be distributed
       const magic = BigNumber.from("42");
@@ -621,9 +657,12 @@ contract("StakingNFT", async () => {
       retReserveToken = await stakingNFT.getTotalReserveATokenMock();
       expect(retReserveToken).to.eq(expReserveToken);
       // Total shares (staked Tokens)
-      expShares = amount;
-      retShares = await stakingNFT.getTotalSharesMock();
-      expect(retShares).to.eq(expShares);
+      expSharesEth = amount;
+      retSharesEth = await stakingNFT.getTotalSharesEthMock();
+      expect(retSharesEth).to.eq(expSharesEth);
+      expSharesToken = BigNumber.from(0);
+      retSharesToken = await stakingNFT.getTotalSharesTokenMock();
+      expect(retSharesToken).to.eq(expSharesToken);
 
       // Burn staking position (static call)
       const from = signers[0].address;
@@ -663,9 +702,12 @@ contract("StakingNFT", async () => {
       retReserveToken = await stakingNFT.getTotalReserveATokenMock();
       expect(retReserveToken).to.eq(expReserveToken);
       // Total shares (staked Tokens)
-      expShares = amount;
-      retShares = await stakingNFT.getTotalSharesMock();
-      expect(retShares).to.eq(expShares);
+      expSharesEth = amount;
+      retSharesEth = await stakingNFT.getTotalSharesEthMock();
+      expect(retSharesEth).to.eq(expSharesEth);
+      expSharesToken = BigNumber.from(0);
+      retSharesToken = await stakingNFT.getTotalSharesTokenMock();
+      expect(retSharesToken).to.eq(expSharesToken);
 
       // Burn staking position
       const tx4 = await stakingNFT.burnNFTMock(from, to, tokenID);
@@ -682,9 +724,12 @@ contract("StakingNFT", async () => {
       retReserveToken = await stakingNFT.getTotalReserveATokenMock();
       expect(retReserveToken).to.eq(expReserveToken);
       // Total shares (staked Tokens)
-      expShares = BigNumber.from(0);
-      retShares = await stakingNFT.getTotalSharesMock();
-      expect(retShares).to.eq(expShares);
+      expSharesEth = BigNumber.from(0);
+      retSharesEth = await stakingNFT.getTotalSharesEthMock();
+      expect(retSharesEth).to.eq(expSharesEth);
+      expSharesToken = BigNumber.from(0);
+      retSharesToken = await stakingNFT.getTotalSharesTokenMock();
+      expect(retSharesToken).to.eq(expSharesToken);
       // Token accumulator
       expTokenAccumulator = BigNumber.from(0);
       expTokenSlush = BigNumber.from(0);
@@ -732,9 +777,12 @@ contract("StakingNFT", async () => {
       let retReserveToken = await stakingNFT.getTotalReserveATokenMock();
       expect(retReserveToken).to.eq(expReserveToken);
       // Total shares (staked Tokens)
-      let expShares = BigNumber.from(0);
-      let retShares = await stakingNFT.getTotalSharesMock();
-      expect(retShares).to.eq(expShares);
+      let expSharesEth = BigNumber.from(0);
+      let retSharesEth = await stakingNFT.getTotalSharesEthMock();
+      expect(retSharesEth).to.eq(expSharesEth);
+      let expSharesToken = BigNumber.from(0);
+      let retSharesToken = await stakingNFT.getTotalSharesTokenMock();
+      expect(retSharesToken).to.eq(expSharesToken);
 
       // Alice stakes
       const signers = await ethers.getSigners();
@@ -777,9 +825,12 @@ contract("StakingNFT", async () => {
       retReserveToken = await stakingNFT.getTotalReserveATokenMock();
       expect(retReserveToken).to.eq(expReserveToken);
       // Total shares (staked Tokens)
-      expShares = aliceShares;
-      retShares = await stakingNFT.getTotalSharesMock();
-      expect(retShares).to.eq(expShares);
+      expSharesEth = aliceShares;
+      retSharesEth = await stakingNFT.getTotalSharesEthMock();
+      expect(retSharesEth).to.eq(expSharesEth);
+      expSharesToken = BigNumber.from(0);
+      retSharesToken = await stakingNFT.getTotalSharesTokenMock();
+      expect(retSharesToken).to.eq(expSharesToken);
 
       // deposit Eth to be distributed
       const magic = BigNumber.from("42");
@@ -825,9 +876,12 @@ contract("StakingNFT", async () => {
       retReserveToken = await stakingNFT.getTotalReserveATokenMock();
       expect(retReserveToken).to.eq(expReserveToken);
       // Total shares (staked Tokens)
-      expShares = aliceShares;
-      retShares = await stakingNFT.getTotalSharesMock();
-      expect(retShares).to.eq(expShares);
+      expSharesEth = aliceShares;
+      retSharesEth = await stakingNFT.getTotalSharesTokenMock();
+      expect(retSharesEth).to.eq(expSharesEth);
+      expSharesToken = BigNumber.from(0);
+      retSharesToken = await stakingNFT.getTotalSharesTokenMock();
+      expect(retSharesToken).to.eq(expSharesToken);
 
       // Bob stakes
       const bobAddress = signers[1].address;
@@ -869,9 +923,12 @@ contract("StakingNFT", async () => {
       retReserveToken = await stakingNFT.getTotalReserveATokenMock();
       expect(retReserveToken).to.eq(expReserveToken);
       // Total shares (staked Tokens)
-      expShares = aliceShares.add(bobShares);
-      retShares = await stakingNFT.getTotalSharesMock();
-      expect(retShares).to.eq(expShares);
+      expSharesEth = aliceShares.add(bobShares);
+      retSharesEth = await stakingNFT.getTotalSharesEthMock();
+      expect(retSharesEth).to.eq(expSharesEth);
+      expSharesToken = BigNumber.from(0);
+      retSharesToken = await stakingNFT.getTotalSharesTokenMock();
+      expect(retSharesToken).to.eq(expSharesToken);
 
       // Burn staking position (static call)
       const retValue6 = await stakingNFT.callStatic.burnNFTMock(
@@ -911,9 +968,12 @@ contract("StakingNFT", async () => {
       retReserveToken = await stakingNFT.getTotalReserveATokenMock();
       expect(retReserveToken).to.eq(expReserveToken);
       // Total shares (staked Tokens)
-      expShares = bobShares;
-      retShares = await stakingNFT.getTotalSharesMock();
-      expect(retShares).to.eq(expShares);
+      expSharesEth = bobShares;
+      retSharesEth = await stakingNFT.getTotalSharesEthMock();
+      expect(retSharesEth).to.eq(expSharesEth);
+      expSharesToken = BigNumber.from(0);
+      retSharesToken = await stakingNFT.getTotalSharesTokenMock();
+      expect(retSharesToken).to.eq(expSharesToken);
       // Token accumulator
       expTokenAccumulator = BigNumber.from(0);
       expTokenSlush = BigNumber.from(0);
@@ -3140,10 +3200,15 @@ contract("StakingNFT", async () => {
   });
 
   describe("getTotal", async () => {
-    it("getTotalShares Test:", async () => {
-      const expTotalShares = BigNumber.from("0");
-      const retTotalShares = await stakingNFT.getTotalSharesMock();
-      expect(retTotalShares).to.eq(expTotalShares);
+    it("getTotalSharesEth Test:", async () => {
+      const expTotalSharesEth = BigNumber.from("0");
+      const retTotalSharesEth = await stakingNFT.getTotalSharesEthMock();
+      expect(retTotalSharesEth).to.eq(expTotalSharesEth);
+    });
+    it("getTotalSharesToken Test:", async () => {
+      const expTotalSharesToken = BigNumber.from("0");
+      const retTotalSharesToken = await stakingNFT.getTotalSharesTokenMock();
+      expect(retTotalSharesToken).to.eq(expTotalSharesToken);
     });
     it("getTotalReserveEth Test:", async () => {
       const expTotalReserveEth = BigNumber.from("0");
@@ -3753,6 +3818,8 @@ contract("StakingNFT", async () => {
       const positionAccumulatorEth = BigNumber.from("0");
       const positionAccumulatorToken = BigNumber.from("0");
       const position = {
+        weightedShares: positionShares,
+        lockedStakingPosition: false,
         shares: positionShares,
         freeAfter: positionFreeAfter,
         withdrawFreeAfter: positionWithdrawFreeAfter,
@@ -3806,6 +3873,8 @@ contract("StakingNFT", async () => {
       const positionAccumulatorEth = BigNumber.from("0");
       const positionAccumulatorToken = BigNumber.from("0");
       const position = {
+        weightedShares: positionShares,
+        lockedStakingPosition: false,
         shares: positionShares,
         freeAfter: positionFreeAfter,
         withdrawFreeAfter: positionWithdrawFreeAfter,
@@ -3862,6 +3931,8 @@ contract("StakingNFT", async () => {
       const positionAccumulatorEth = BigNumber.from("0");
       const positionAccumulatorToken = BigNumber.from("0");
       const position = {
+        weightedShares: positionShares,
+        lockedStakingPosition: false,
         shares: positionShares,
         freeAfter: positionFreeAfter,
         withdrawFreeAfter: positionWithdrawFreeAfter,
@@ -3921,6 +3992,8 @@ contract("StakingNFT", async () => {
       const positionAccumulatorEth = BigNumber.from("0");
       const positionAccumulatorToken = BigNumber.from("0");
       const position = {
+        weightedShares: positionShares,
+        lockedStakingPosition: false,
         shares: positionShares,
         freeAfter: positionFreeAfter,
         withdrawFreeAfter: positionWithdrawFreeAfter,
@@ -3981,6 +4054,8 @@ contract("StakingNFT", async () => {
       const positionAccumulatorEth = BigNumber.from("0");
       const positionAccumulatorToken = BigNumber.from("0");
       const position = {
+        weightedShares: positionShares,
+        lockedStakingPosition: false,
         shares: positionShares,
         freeAfter: positionFreeAfter,
         withdrawFreeAfter: positionWithdrawFreeAfter,

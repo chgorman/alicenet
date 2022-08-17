@@ -667,6 +667,7 @@ abstract contract StakingNFT is
     // _collect performs calculations necessary to determine any distributions
     // due to an account such that it may be used for both token and eth
     // distributions this prevents the need to keep redundant logic
+    // TODO: fix for weighted shares!
     function _collect(
         uint256 shares_,
         Accumulator memory state_,
@@ -693,11 +694,11 @@ abstract contract StakingNFT is
             // update accumulator value for calling method
             positionAccumulatorValue_ += accumulatorDelta;
         }
-        // calculate payout based on shares held in position
-        uint256 payout = accumulatorDelta * p_.shares;
+        // calculate payout based on weightedShares held in position
+        uint256 payout = accumulatorDelta * p_.weightedShares;
         // if there are no shares other than this position, flush the slush fund
         // into the payout and update the in memory state object
-        if (shares_ == p_.shares) {
+        if (shares_ == p_.weightedShares) {
             payout += state_.slush;
             state_.slush = 0;
         }
