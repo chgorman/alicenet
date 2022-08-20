@@ -877,7 +877,7 @@ contract("StakingNFT", async () => {
       expect(retReserveToken).to.eq(expReserveToken);
       // Total shares (staked Tokens)
       expSharesEth = aliceShares;
-      retSharesEth = await stakingNFT.getTotalSharesTokenMock();
+      retSharesEth = await stakingNFT.getTotalSharesEthMock();
       expect(retSharesEth).to.eq(expSharesEth);
       expSharesToken = BigNumber.from(0);
       retSharesToken = await stakingNFT.getTotalSharesTokenMock();
@@ -1887,6 +1887,12 @@ contract("StakingNFT", async () => {
       const expTokenID = BigNumber.from("1");
       const tokenID = BigNumber.from(receipt.events[2].args.tokenId);
       expect(tokenID).to.eq(expTokenID);
+      // Lock Position to receive rewards
+      const stakeLockPeriod = await stakingNFT.getMaxMintLockMock();
+      txResponse = await stakingNFT.lockStakingPosition(tokenID, stakeLockPeriod);
+      receipt = await txResponse.wait();
+      expect(receipt.status).to.eq(1);
+      // Perform checks
       const expTokenReserve = amount.add(depositedToken);
       const retTokenReserve = await stakingNFT.getTotalReserveATokenMock();
       expect(retTokenReserve).to.eq(expTokenReserve);
@@ -1899,7 +1905,7 @@ contract("StakingNFT", async () => {
       expect(retTokenSlush).to.eq(expTokenSlush);
 
       // mine blocks
-      const duration = BigNumber.from(2);
+      const duration = stakeLockPeriod.add(1);
       await mineBlocks(duration.toBigInt());
 
       // collectToken
@@ -1912,10 +1918,12 @@ contract("StakingNFT", async () => {
 
     it("collectToken Test 2: two stakers", async () => {
       const scaleFactor = await stakingNFT.getAccumulatorScaleFactor();
+      const stakeLockPeriod = await stakingNFT.getMaxMintLockMock();
 
       // Add Alice
       const signers = await ethers.getSigners();
-      const aliceAddress = signers[0].address;
+      const aliceSigner = signers[0];
+      const aliceAddress = aliceSigner.address;
       const amount = BigNumber.from("1000000000000000000");
       let txResponse = await fixture.aToken.approve(stakingNFT.address, amount);
       // We use receipt:any *only* because of events which may not be present
@@ -1928,9 +1936,16 @@ contract("StakingNFT", async () => {
       let expTokenReserve = amount;
       let retTokenReserve = await stakingNFT.getTotalReserveATokenMock();
       expect(retTokenReserve).to.eq(expTokenReserve);
+      // Lock Position to receive rewards
+      txResponse = await stakingNFT
+        .connect(aliceSigner)
+        .lockStakingPosition(aliceTokenID, stakeLockPeriod);
+      receipt = await txResponse.wait();
+      expect(receipt.status).to.eq(1);
 
       // Add Bob
-      const bobAddress = signers[1].address;
+      const bobSigner = signers[1];
+      const bobAddress = bobSigner.address;
       txResponse = await fixture.aToken.approve(stakingNFT.address, amount);
       receipt = await txResponse.wait();
       txResponse = await stakingNFT.mintNFTMock(bobAddress, amount);
@@ -1941,6 +1956,12 @@ contract("StakingNFT", async () => {
       expTokenReserve = amount.add(amount);
       retTokenReserve = await stakingNFT.getTotalReserveATokenMock();
       expect(retTokenReserve).to.eq(expTokenReserve);
+      // Lock Position to receive rewards
+      txResponse = await stakingNFT
+        .connect(bobSigner)
+        .lockStakingPosition(bobTokenID, stakeLockPeriod);
+      receipt = await txResponse.wait();
+      expect(receipt.status).to.eq(1);
 
       // Deposit Token
       const magic = BigNumber.from("42");
@@ -1975,10 +1996,10 @@ contract("StakingNFT", async () => {
       expect(retTokenSlush).to.eq(expTokenSlush);
 
       // mine blocks
-      const duration = BigNumber.from(2);
+      const duration = stakeLockPeriod.add(1);
       await mineBlocks(duration.toBigInt());
 
-      // collectEth
+      // collectToken
       const alicePayoutToken = await stakingNFT.callStatic.collectTokenMock(
         aliceTokenID
       );
@@ -2044,6 +2065,7 @@ contract("StakingNFT", async () => {
   describe("collectTokenTo", async () => {
     it("collectTokenTo Test 1: one staker", async () => {
       const scaleFactor = await stakingNFT.getAccumulatorScaleFactor();
+      const stakeLockPeriod = await stakingNFT.getMaxMintLockMock();
 
       // Deposit Token
       const magic = BigNumber.from("42");
@@ -2081,6 +2103,10 @@ contract("StakingNFT", async () => {
       const expTokenID = BigNumber.from("1");
       const tokenID = BigNumber.from(receipt.events[2].args.tokenId);
       expect(tokenID).to.eq(expTokenID);
+      // Lock Position to receive rewards
+      txResponse = await stakingNFT.lockStakingPosition(tokenID, stakeLockPeriod);
+      receipt = await txResponse.wait();
+      expect(receipt.status).to.eq(1);
       const expTokenReserve = amount.add(depositedToken);
       const retTokenReserve = await stakingNFT.getTotalReserveATokenMock();
       expect(retTokenReserve).to.eq(expTokenReserve);
@@ -2093,7 +2119,7 @@ contract("StakingNFT", async () => {
       expect(retTokenSlush).to.eq(expTokenSlush);
 
       // mine blocks
-      const duration = BigNumber.from(2);
+      const duration = stakeLockPeriod.add(1);
       await mineBlocks(duration.toBigInt());
 
       // collectTokenTo
@@ -2109,10 +2135,12 @@ contract("StakingNFT", async () => {
 
     it("collectTokenTo Test 2: two stakers", async () => {
       const scaleFactor = await stakingNFT.getAccumulatorScaleFactor();
+      const stakeLockPeriod = await stakingNFT.getMaxMintLockMock();
 
       // Add Alice
       const signers = await ethers.getSigners();
-      const aliceAddress = signers[0].address;
+      const aliceSigner = signers[0];
+      const aliceAddress = aliceSigner.address;
       const amount = BigNumber.from("1000000000000000000");
       let txResponse = await fixture.aToken.approve(stakingNFT.address, amount);
       // We use receipt:any *only* because of events which may not be present
@@ -2125,9 +2153,16 @@ contract("StakingNFT", async () => {
       let expTokenReserve = amount;
       let retTokenReserve = await stakingNFT.getTotalReserveATokenMock();
       expect(retTokenReserve).to.eq(expTokenReserve);
+      // Lock Position to receive rewards
+      txResponse = await stakingNFT
+        .connect(aliceSigner)
+        .lockStakingPosition(aliceTokenID, stakeLockPeriod);
+      receipt = await txResponse.wait();
+      expect(receipt.status).to.eq(1);
 
       // Add Bob
-      const bobAddress = signers[1].address;
+      const bobSigner = signers[1];
+      const bobAddress = bobSigner.address;
       txResponse = await fixture.aToken.approve(stakingNFT.address, amount);
       receipt = await txResponse.wait();
       txResponse = await stakingNFT.mintNFTMock(bobAddress, amount);
@@ -2138,6 +2173,12 @@ contract("StakingNFT", async () => {
       expTokenReserve = amount.add(amount);
       retTokenReserve = await stakingNFT.getTotalReserveATokenMock();
       expect(retTokenReserve).to.eq(expTokenReserve);
+      // Lock Position to receive rewards
+      txResponse = await stakingNFT
+        .connect(bobSigner)
+        .lockStakingPosition(bobTokenID, stakeLockPeriod);
+      receipt = await txResponse.wait();
+      expect(receipt.status).to.eq(1);
 
       // Deposit Token
       const magic = BigNumber.from("42");
@@ -2172,7 +2213,7 @@ contract("StakingNFT", async () => {
       expect(retTokenSlush).to.eq(expTokenSlush);
 
       // mine blocks
-      const duration = BigNumber.from(2);
+      const duration = stakeLockPeriod.add(1);
       await mineBlocks(duration.toBigInt());
 
       // collectTokenTo
@@ -3446,6 +3487,11 @@ contract("StakingNFT", async () => {
       const expTokenID = BigNumber.from("1");
       const tokenID = BigNumber.from(receipt.events[2].args.tokenId);
       expect(tokenID).to.eq(expTokenID);
+      // Lock Position to receive rewards
+      const stakeLockPeriod = await stakingNFT.getMaxMintLockMock();
+      txResponse = await stakingNFT.lockStakingPosition(tokenID, stakeLockPeriod);
+      receipt = await txResponse.wait();
+      expect(receipt.status).to.eq(1);
 
       const expEstimatedToken = depositedToken;
       const estimatedToken = await stakingNFT.estimateTokenCollectionMock(
@@ -3455,8 +3501,12 @@ contract("StakingNFT", async () => {
     });
 
     it("estimateTokenCollection Test 3; Token, 2 stakers, all Alice", async () => {
+      const stakeLockPeriod = await stakingNFT.getMaxMintLockMock();
       const signers = await ethers.getSigners();
-      const aliceAddress = signers[0].address;
+
+      // Add Alice
+      const aliceSigner = signers[0];
+      const aliceAddress = aliceSigner.address;
       const aliceShares = BigNumber.from("1000000000000000000");
       let txResponse = await fixture.aToken.approve(
         stakingNFT.address,
@@ -3469,6 +3519,12 @@ contract("StakingNFT", async () => {
       const expAliceTokenID = BigNumber.from("1");
       const aliceTokenID = BigNumber.from(receipt.events[2].args.tokenId);
       expect(aliceTokenID).to.eq(expAliceTokenID);
+      // Lock Position to receive rewards
+      txResponse = await stakingNFT
+        .connect(aliceSigner)
+        .lockStakingPosition(aliceTokenID, stakeLockPeriod);
+      receipt = await txResponse.wait();
+      expect(receipt.status).to.eq(1);
 
       // Deposit Token
       const scaleFactor = await stakingNFT.getAccumulatorScaleFactor();
@@ -3497,7 +3553,8 @@ contract("StakingNFT", async () => {
       expect(retTokenSlush).to.eq(expTokenSlush);
 
       // Add Bob
-      const bobAddress = signers[1].address;
+      const bobSigner = signers[1];
+      const bobAddress = bobSigner.address;
       const bobShares = BigNumber.from("1000000000000000000");
       txResponse = await fixture.aToken.approve(stakingNFT.address, bobShares);
       // We use receipt:any *only* because of events which may not be present
@@ -3507,6 +3564,12 @@ contract("StakingNFT", async () => {
       const expBobTokenID = BigNumber.from("2");
       const bobTokenID = BigNumber.from(receipt.events[2].args.tokenId);
       expect(bobTokenID).to.eq(expBobTokenID);
+      // Lock Position to receive rewards
+      txResponse = await stakingNFT
+        .connect(bobSigner)
+        .lockStakingPosition(bobTokenID, stakeLockPeriod);
+      receipt = await txResponse.wait();
+      expect(receipt.status).to.eq(1);
 
       // Check
       const expEstimatedTokenAlice = depositedToken;
@@ -3523,7 +3586,11 @@ contract("StakingNFT", async () => {
 
     it("estimateTokenCollection Test 4; Token, 2 stakers, split", async () => {
       const signers = await ethers.getSigners();
-      const aliceAddress = signers[0].address;
+      const stakeLockPeriod = await stakingNFT.getMaxMintLockMock();
+
+      // Add Alice
+      const aliceSigner = signers[0];
+      const aliceAddress = aliceSigner.address;
       const aliceShares = BigNumber.from("1000000000000000000");
       let txResponse = await fixture.aToken.approve(
         stakingNFT.address,
@@ -3536,8 +3603,16 @@ contract("StakingNFT", async () => {
       const expAliceTokenID = BigNumber.from("1");
       const aliceTokenID = BigNumber.from(receipt.events[2].args.tokenId);
       expect(aliceTokenID).to.eq(expAliceTokenID);
+      // Lock Position to receive rewards
+      txResponse = await stakingNFT
+        .connect(aliceSigner)
+        .lockStakingPosition(aliceTokenID, stakeLockPeriod);
+      receipt = await txResponse.wait();
+      expect(receipt.status).to.eq(1);
 
-      const bobAddress = signers[1].address;
+      // Add Bob
+      const bobSigner = signers[1];
+      const bobAddress = bobSigner.address;
       const bobShares = BigNumber.from("1000000000000000000");
       txResponse = await fixture.aToken.approve(stakingNFT.address, bobShares);
       receipt = await txResponse.wait();
@@ -3546,6 +3621,12 @@ contract("StakingNFT", async () => {
       const expBobTokenID = BigNumber.from("2");
       const bobTokenID = BigNumber.from(receipt.events[2].args.tokenId);
       expect(bobTokenID).to.eq(expBobTokenID);
+      // Lock Position to receive rewards
+      txResponse = await stakingNFT
+        .connect(bobSigner)
+        .lockStakingPosition(bobTokenID, stakeLockPeriod);
+      receipt = await txResponse.wait();
+      expect(receipt.status).to.eq(1);
 
       // deposit Token to be distributed
       const scaleFactor = await stakingNFT.getAccumulatorScaleFactor();

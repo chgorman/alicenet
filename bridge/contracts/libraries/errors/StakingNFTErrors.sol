@@ -12,6 +12,6 @@ library StakingNFTErrors {
     error BalanceLessThanReserve(uint256 balance, uint256 reserve);
     error SlushTooLarge(uint256 slush);
     error MintAmountZero();
-    error PositionIsLocked(uint256 tokenID);
-    error PositionIsUnlocked(uint256 tokenID);
+    error PositionIsLocked();
+    error PositionIsUnlocked();
 }

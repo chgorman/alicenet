@@ -348,6 +348,9 @@ abstract contract StakingNFT is
             revert StakingNFTErrors.InvalidTokenId(tokenID_);
         }
         Position memory p = _positions[tokenID_];
+        if (!p.lockedStakingPosition) {
+            return 0;
+        }
         Accumulator memory tokenState = _tokenState;
         uint256 sharesToken = _sharesToken;
         (tokenState.accumulator, tokenState.slush) = _slushSkim(
@@ -576,6 +579,9 @@ abstract contract StakingNFT is
         internal
         returns (Position memory p, uint256 payout)
     {
+        if (!p_.lockedStakingPosition) {
+            revert StakingNFTErrors.PositionIsUnlocked();
+        }
         uint256 acc;
         Accumulator memory tokenState = _tokenState;
         (tokenState.accumulator, tokenState.slush) = _slushSkim(
@@ -798,7 +804,7 @@ abstract contract StakingNFT is
         Position memory p = _positions[tokenID_];
         // Must be in a locked staking position
         if (!p.lockedStakingPosition) {
-            revert StakingNFTErrors.PositionIsUnlocked(tokenID_);
+            revert StakingNFTErrors.PositionIsUnlocked();
         }
 
         // get copy of storage to save gas
@@ -853,7 +859,7 @@ abstract contract StakingNFT is
         Position memory p = _positions[tokenID_];
         // Must not currently be a locked staking position
         if (p.lockedStakingPosition) {
-            revert StakingNFTErrors.PositionIsLocked(tokenID_);
+            revert StakingNFTErrors.PositionIsLocked();
         }
 
         // Compute updated weight
@@ -954,6 +960,4 @@ abstract contract StakingNFT is
         //return ((lockingTierNumerator * amount_) / lockingTierDenominator, lockedStakingPosition);
         return (weightedAmount, true);
     }
-
-
 }

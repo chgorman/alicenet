@@ -85,7 +85,7 @@ const config: HardhatUserConfig = {
     },
     hardhat: {
       chainId: 1337,
-      allowUnlimitedContractSize: false,
+      allowUnlimitedContractSize: true,
       mining: {
         auto: true,
         interval: 0,
