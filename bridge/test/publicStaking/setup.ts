@@ -33,7 +33,8 @@ export interface StakingContract {
   Address: string;
   TokenBalance: bigint;
   EthBalance: bigint;
-  TotalShares: bigint;
+  TotalSharesEth: bigint;
+  TotalSharesToken: bigint;
   ReserveTokens: bigint;
   ReserveEth: bigint;
   AccumulatorToken: AccumulatorState;
@@ -69,7 +70,8 @@ export const getCurrentState = async (
       EthBalance: (
         await ethers.provider.getBalance(stakingContract.address)
       ).toBigInt(),
-      TotalShares: (await stakingContract.getTotalShares()).toBigInt(),
+      TotalSharesEth: (await stakingContract.getTotalSharesEth()).toBigInt(),
+      TotalSharesToken: (await stakingContract.getTotalSharesToken()).toBigInt(),
       ReserveTokens: (await stakingContract.getTotalReserveAToken()).toBigInt(),
       ReserveEth: (await stakingContract.getTotalReserveEth()).toBigInt(),
       AccumulatorToken: {
@@ -327,21 +329,14 @@ export const mintPositionCheckAndUpdateState = async (
   stakingState: StakingState,
   errorMessage: string
 ) => {
-  if (stakingState.BaseStaking.TotalShares > BigInt(0)) {
+  if (stakingState.BaseStaking.TotalSharesEth > BigInt(0)) {
     // Update eth accum
     const deltaAccumEth =
       stakingState.BaseStaking.AccumulatorEth.Slush /
-      stakingState.BaseStaking.TotalShares;
+      stakingState.BaseStaking.TotalSharesEth;
     stakingState.BaseStaking.AccumulatorEth.Slush -=
-      deltaAccumEth * stakingState.BaseStaking.TotalShares;
+      deltaAccumEth * stakingState.BaseStaking.TotalSharesEth;
     stakingState.BaseStaking.AccumulatorEth.Accumulator += deltaAccumEth;
-    // Update token accum
-    const deltaAccumToken =
-      stakingState.BaseStaking.AccumulatorToken.Slush /
-      stakingState.BaseStaking.TotalShares;
-    stakingState.BaseStaking.AccumulatorToken.Slush -=
-      deltaAccumToken * stakingState.BaseStaking.TotalShares;
-    stakingState.BaseStaking.AccumulatorToken.Accumulator += deltaAccumToken;
   }
   const [tokenID, expectedPosition] = await mintPosition(
     stakingContract,
@@ -354,7 +349,7 @@ export const mintPositionCheckAndUpdateState = async (
   tokensID[userIdx] = tokenID;
   stakingState.BaseStaking.TokenBalance += amount;
   stakingState.BaseStaking.ReserveTokens += amount;
-  stakingState.BaseStaking.TotalShares += amount;
+  stakingState.BaseStaking.TotalSharesEth += amount;
   stakingState.Users[userIdx].TokenBalance -= amount;
   stakingState.Users[userIdx].NFTBalance++;
   stakingState.Users[userIdx].Position = expectedPosition;
@@ -435,14 +430,14 @@ export const collectTokensCheckAndUpdateState = async (
   errorMessage: string,
   expectedSlush?: bigint
 ) => {
-  if (stakingState.BaseStaking.TotalShares > BigInt(0)) {
+  if (stakingState.BaseStaking.TotalSharesToken > BigInt(0)) {
     const overflowValue = 2n ** 168n;
     // Update token accum
     const deltaAccumToken =
       stakingState.BaseStaking.AccumulatorToken.Slush /
-      stakingState.BaseStaking.TotalShares;
+      stakingState.BaseStaking.TotalSharesToken;
     stakingState.BaseStaking.AccumulatorToken.Slush -=
-      deltaAccumToken * stakingState.BaseStaking.TotalShares;
+      deltaAccumToken * stakingState.BaseStaking.TotalSharesToken;
     stakingState.BaseStaking.AccumulatorToken.Accumulator += deltaAccumToken;
     if (
       stakingState.BaseStaking.AccumulatorToken.Accumulator >= overflowValue
@@ -481,14 +476,14 @@ export const collectEthCheckAndUpdateState = async (
   expectedSlush?: bigint,
   expectedSlushToken?: bigint
 ) => {
-  if (stakingState.BaseStaking.TotalShares > BigInt(0)) {
+  if (stakingState.BaseStaking.TotalSharesEth > BigInt(0)) {
     const overflowValue = 2n ** 168n;
     // Update eth accum
     const deltaAccumEth =
       stakingState.BaseStaking.AccumulatorEth.Slush /
-      stakingState.BaseStaking.TotalShares;
+      stakingState.BaseStaking.TotalSharesEth;
     stakingState.BaseStaking.AccumulatorEth.Slush -=
-      deltaAccumEth * stakingState.BaseStaking.TotalShares;
+      deltaAccumEth * stakingState.BaseStaking.TotalSharesEth;
     stakingState.BaseStaking.AccumulatorEth.Accumulator += deltaAccumEth;
     if (stakingState.BaseStaking.AccumulatorEth.Accumulator >= overflowValue) {
       stakingState.BaseStaking.AccumulatorEth.Accumulator -= overflowValue;
@@ -527,14 +522,14 @@ export const collectTokensToCheckAndUpdateState = async (
   errorMessage: string,
   expectedSlush?: bigint
 ) => {
-  if (stakingState.BaseStaking.TotalShares > BigInt(0)) {
+  if (stakingState.BaseStaking.TotalSharesToken > BigInt(0)) {
     const overflowValue = 2n ** 168n;
     // Update token accum
     const deltaAccumToken =
       stakingState.BaseStaking.AccumulatorToken.Slush /
-      stakingState.BaseStaking.TotalShares;
+      stakingState.BaseStaking.TotalSharesToken;
     stakingState.BaseStaking.AccumulatorToken.Slush -=
-      deltaAccumToken * stakingState.BaseStaking.TotalShares;
+      deltaAccumToken * stakingState.BaseStaking.TotalSharesToken;
     stakingState.BaseStaking.AccumulatorToken.Accumulator += deltaAccumToken;
     if (
       stakingState.BaseStaking.AccumulatorToken.Accumulator >= overflowValue
@@ -576,14 +571,14 @@ export const collectEthToCheckAndUpdateState = async (
   expectedSlush?: bigint,
   expectedSlushToken?: bigint
 ) => {
-  if (stakingState.BaseStaking.TotalShares > BigInt(0)) {
+  if (stakingState.BaseStaking.TotalSharesEth > BigInt(0)) {
     const overflowValue = 2n ** 168n;
     // Update eth accum
     const deltaAccumEth =
       stakingState.BaseStaking.AccumulatorEth.Slush /
-      stakingState.BaseStaking.TotalShares;
+      stakingState.BaseStaking.TotalSharesEth;
     stakingState.BaseStaking.AccumulatorEth.Slush -=
-      deltaAccumEth * stakingState.BaseStaking.TotalShares;
+      deltaAccumEth * stakingState.BaseStaking.TotalSharesEth;
     stakingState.BaseStaking.AccumulatorEth.Accumulator += deltaAccumEth;
     if (stakingState.BaseStaking.AccumulatorEth.Accumulator >= overflowValue) {
       stakingState.BaseStaking.AccumulatorEth.Accumulator -= overflowValue;
@@ -625,24 +620,26 @@ export const burnPositionCheckAndUpdateState = async (
   expectedSlushEth?: bigint,
   expectedSlushToken?: bigint
 ) => {
-  if (stakingState.BaseStaking.TotalShares > BigInt(0)) {
-    const overflowValue = 2n ** 168n;
+  const overflowValue = 2n ** 168n;
+  if (stakingState.BaseStaking.TotalSharesEth > BigInt(0)) {
     // Update eth accum
     const deltaAccumEth =
       stakingState.BaseStaking.AccumulatorEth.Slush /
-      stakingState.BaseStaking.TotalShares;
+      stakingState.BaseStaking.TotalSharesEth;
     stakingState.BaseStaking.AccumulatorEth.Slush -=
-      deltaAccumEth * stakingState.BaseStaking.TotalShares;
+      deltaAccumEth * stakingState.BaseStaking.TotalSharesEth;
     stakingState.BaseStaking.AccumulatorEth.Accumulator += deltaAccumEth;
     if (stakingState.BaseStaking.AccumulatorEth.Accumulator >= overflowValue) {
       stakingState.BaseStaking.AccumulatorEth.Accumulator -= overflowValue;
     }
+  }
+  if (stakingState.BaseStaking.TotalSharesToken > BigInt(0)) {
     // Update token accum
     const deltaAccumToken =
       stakingState.BaseStaking.AccumulatorToken.Slush /
-      stakingState.BaseStaking.TotalShares;
+      stakingState.BaseStaking.TotalSharesToken;
     stakingState.BaseStaking.AccumulatorToken.Slush -=
-      deltaAccumToken * stakingState.BaseStaking.TotalShares;
+      deltaAccumToken * stakingState.BaseStaking.TotalSharesToken;
     stakingState.BaseStaking.AccumulatorToken.Accumulator += deltaAccumToken;
     if (
       stakingState.BaseStaking.AccumulatorToken.Accumulator >= overflowValue

@@ -72,7 +72,7 @@ describe("PublicStaking: Accumulator Overflow", async () => {
     await mineBlocks(2n);
   });
 
-  it("Collect Tokens and ETH with overflow in the accumulators", async function () {
+  it.only("Collect Tokens and ETH with overflow in the accumulators", async function () {
     const expectedAccumulatorToken =
       2n ** 168n -
       1n -
