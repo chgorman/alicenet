@@ -366,9 +366,11 @@ func TestMined2(t *testing.T) {
 			t.Fatal("delete failure")
 		}
 		_, missing, err = hndlr.Get(txn, [][]byte{txHash})
-		if len(missing) != 1 {
+		if err != nil {
 			t.Error(err)
-			t.Fatal("delete failure")
+		}
+		if len(missing) > 0 {
+			t.Error("Should not be missing because tx was not deleted")
 		}
 		atHeight, err = hndlr.GetHeightForTx(txn, getTxHash1)
 		if err != nil {
@@ -377,7 +379,6 @@ func TestMined2(t *testing.T) {
 		if atHeight != 1 {
 			t.Fatalf("not at height 1: %v", atHeight)
 		}
-
 		return nil
 	})
 	if err != nil {
@@ -470,9 +471,11 @@ func TestMined3(t *testing.T) {
 			t.Fatal("delete failure")
 		}
 		_, missing, err = hndlr.Get(txn, [][]byte{tx2Hash})
-		if len(missing) != 1 {
+		if err != nil {
 			t.Error(err)
-			t.Fatal("delete failure")
+		}
+		if len(missing) > 0 {
+			t.Error("Should not be missing because tx2 was not deleted")
 		}
 		atHeight, err = hndlr.GetHeightForTx(txn, getTxHash2)
 		if err != nil {
